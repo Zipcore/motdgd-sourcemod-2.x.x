@@ -24,7 +24,7 @@
 #pragma semicolon 1
 #include <sourcemod>
 
-#define PLUGIN_VERSION "2.1.0"
+#define PLUGIN_VERSION "2.1.1"
 
 
 // ====[ HANDLES | CVARS | VARIABLES ]===================================================
@@ -152,7 +152,7 @@ public Action:Event_End(Handle:event, const String:name[], bool:dontBroadcast)
 	new userId = GetEventInt(event, "userid");
 	new client = GetClientOfUserId(userId);
 
-	if(GetConVarFloat(g_Review) > 15.0 || !GetConVarInt(g_OnOther) || GetConVarInt(g_OnOther) != 2)
+	if(GetConVarFloat(g_Review) < 15.0 || GetConVarInt(g_OnOther) == 0 || GetConVarInt(g_OnOther) == 2)
 		return Plugin_Continue;
 
 	if(IsValidClient(client) && CanView[client]){
@@ -169,10 +169,10 @@ public Action:Event_Death(Handle:event, const String:name[], bool:dontBroadcast)
 	new userId = GetEventInt(event, "userid");
 	new client = GetClientOfUserId(userId);
 
-	if(GetConVarFloat(g_Review) > 15.0 || !GetConVarInt(g_OnOther) || GetConVarInt(g_OnOther) != 1)
+	if(StrEqual(gameDir, "left4dead2") || StrEqual(gameDir, "left4dead"))
 		return Plugin_Continue;
 
-	if(StrEqual(gameDir, "left4dead2") || StrEqual(gameDir, "left4dead"))
+	if(GetConVarFloat(g_Review) < 15.0 || GetConVarInt(g_OnOther) < 2)
 		return Plugin_Continue;
 
 	if(IsValidClient(client) && CanView[client]){
